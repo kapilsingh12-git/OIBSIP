@@ -1,5 +1,5 @@
 import Inventory from '../models/Inventory.js';
-import sendEmail from './sendEmail.js';
+import sendEmail from './sendemail.js';
 
 // Checks all inventory items; emails admin if any are below threshold
 export const checkLowStock = async () => {
