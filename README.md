@@ -58,6 +58,7 @@ npm run dev
 
 ## 🔗 Live Links
 
-- Frontend: [Deployed link here]
-- Backend API: [Deployed link here]
+- Frontend: (https://pizzadeliveryfrontend.vercel.app/)
+- Backend API:(https://pizza-delivery-backend-6zya.onrender.com)
+
 
