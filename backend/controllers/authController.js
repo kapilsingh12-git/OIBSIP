@@ -1,7 +1,7 @@
 import crypto from 'crypto';
 import User from '../models/User.js';
 import generateToken from '../utils/generateToken.js';
-import sendEmail from '../utils/sendEmail.js';
+import sendEmail from '../utils/sendemail.js';
 
 // @desc    Register new user
 // @route   POST /api/auth/register
