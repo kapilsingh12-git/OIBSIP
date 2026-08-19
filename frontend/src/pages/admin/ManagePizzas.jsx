@@ -127,8 +127,8 @@ const ManagePizzas = () => {
         </form>
       )}
 
-      <div className="bg-white rounded-xl shadow overflow-hidden">
-        <table className="w-full text-left">
+     <div className="bg-white rounded-xl shadow overflow-x-auto">
+     <table className="w-full text-left min-w-[600px]">
           <thead className="bg-gray-50 border-b">
             <tr>
               <th className="p-3">Name</th>
