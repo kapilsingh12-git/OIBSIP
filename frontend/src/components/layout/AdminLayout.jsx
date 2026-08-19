@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 
@@ -12,23 +13,38 @@ const navItems = [
 const AdminLayout = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const handleLogout = () => {
     logout();
     navigate('/admin/login');
   };
 
+  const closeSidebar = () => setIsSidebarOpen(false);
+
   return (
-    <div className="flex min-h-screen bg-gray-100">
+    <div className="flex min-h-screen bg-gray-100 relative">
+      {/* Overlay - only on mobile when sidebar is open, closes sidebar on click */}
+      {isSidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-30 sm:hidden"
+          onClick={closeSidebar}
+        ></div>
+      )}
+
       {/* Sidebar */}
-      <aside className="w-64 bg-gray-900 text-white flex flex-col">
-        <div className="p-5 border-b border-gray-700">
+      <aside
+        className={`w-64 bg-gray-900 text-white flex flex-col fixed sm:static inset-y-0 left-0 z-40 transform transition-transform duration-200 ${
+          isSidebarOpen ? 'translate-x-0' : '-translate-x-full sm:translate-x-0'
+        }`}
+      >
+        <div className="p-5 border-b border-gray-700 flex justify-between items-center">
           <h2 className="text-lg font-bold">🍕 Admin Panel</h2>
+          <button className="sm:hidden text-xl" onClick={closeSidebar}>✕</button>
         </div>
 
-        {/* Switch back to normal website */}
         <button
-          onClick={() => navigate('/')}
+          onClick={() => { navigate('/'); closeSidebar(); }}
           className="mx-3 mt-3 mb-1 text-left text-sm bg-gray-800 hover:bg-gray-700 px-3 py-2 rounded-lg flex items-center gap-2"
         >
           ⬅️ Back to Website
@@ -39,6 +55,7 @@ const AdminLayout = () => {
             <NavLink
               key={item.path}
               to={item.path}
+              onClick={closeSidebar}
               className={({ isActive }) =>
                 `flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors ${
                   isActive ? 'bg-red-600 text-white' : 'text-gray-300 hover:bg-gray-800'
@@ -51,22 +68,23 @@ const AdminLayout = () => {
           ))}
         </nav>
         <div className="p-3 border-t border-gray-700">
-          <button
-            onClick={handleLogout}
-            className="w-full text-left text-sm text-gray-300 hover:text-white px-3 py-2"
-          >
+          <button onClick={handleLogout} className="w-full text-left text-sm text-gray-300 hover:text-white px-3 py-2">
             🚪 Logout
           </button>
         </div>
       </aside>
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col">
-        <header className="bg-white shadow px-6 py-4 flex justify-between items-center">
-          <span className="text-gray-600 text-sm">Welcome back,</span>
+      <div className="flex-1 flex flex-col w-full">
+        <header className="bg-white shadow px-4 sm:px-6 py-4 flex justify-between items-center">
+          {/* Hamburger - only visible on mobile */}
+          <button className="sm:hidden text-2xl text-gray-700" onClick={() => setIsSidebarOpen(true)}>
+            ☰
+          </button>
+          <span className="text-gray-600 text-sm hidden sm:block">Welcome back,</span>
           <span className="font-semibold text-gray-800">{user?.name}</span>
         </header>
-        <main className="flex-1 p-6">
+        <main className="flex-1 p-4 sm:p-6 overflow-x-auto">
           <Outlet />
         </main>
       </div>
